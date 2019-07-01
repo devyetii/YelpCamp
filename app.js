@@ -19,6 +19,10 @@ app.get("/campgrounds", (req, res) => {
     res.render("campgrounds" , {title: "campgrounds", camps : camps});
 });
 
+app.post('/campgrounds', (req, res) => {
+    
+})
+
 //Listening
 app.listen(3000, () => {
     console.log("Listening at port 3000 ...");
