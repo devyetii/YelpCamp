@@ -1,0 +1,28 @@
+div.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-container{
+    width: 40%;
+    margin: 30px auto;
+}
+
+.form-container form {
+    padding: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    .form-container{
+        width: 100%;
+        margin: 30px auto;
+    }
+}
+
+.center-text {
+    text-align: center;
+}
+
+h1.center-text {
+    margin: 20px;
+}

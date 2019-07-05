@@ -1,8 +1,20 @@
-var express = require("express");
-var app = express();
+//Dependencies
+const express       = require("express");
+const bodyParser    = require("body-parser");
 
+//Express app
+const app = express();
+
+//configuration of body-parser
+app.use(bodyParser.urlencoded({extended: true}));
+
+//Views and public directory config
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+
+//Models
+const Campground = require('./models/Campground');
+
 
 //Landing Page
 app.get("/", (req, res) => {
@@ -11,17 +23,29 @@ app.get("/", (req, res) => {
 
 //Campgrounds Page
 app.get("/campgrounds", (req, res) => {
-    var camps = [
-        {name : "Salmon Creek", url : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtiiax3c_G7gA7er8Il2ykfVLqX36bGuntLpWBhVw8NCrc9Ckr"},
-        {name : "Granite Hill", url : "https://www.nationalparks.nsw.gov.au/-/media/npws/images/parks/munmorah-state-conservation-area/background/freemans-campground-background.jpg"},
-        {name : "Mountain Goat's Rest", url : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK6OAkMx02Vgb-inp1RwSWA6yqsWXGvPC-hqrZdmpQQx6cRgqs"},
-    ];
-    res.render("campgrounds" , {title: "campgrounds", camps : camps});
+    Campground.find().then((camps) => {
+        res.render("campgrounds" , {title: "campgrounds", camps : camps});
+    }).catch((err) => {
+        res.send(`<h3>Error: ${err}</h3>`);
+    });
 });
 
+//Add Campground form
+app.get('/campgrounds/new', (req, res) => {
+    res.render('new.ejs', {title: "New"});
+});
+
+//Post route of adding campground
 app.post('/campgrounds', (req, res) => {
-    
-})
+    let name    = req.body.name;
+    let url     = req.body.image_url;
+    let newCamp = { name: name, image_url: url};
+    Campground.create(newCamp).then(() => {
+        res.redirect('/campgrounds');
+    }).catch((err) => {
+        res.send(`<h3>Error: ${err}</h3>`);
+    });
+});
 
 //Listening
 app.listen(3000, () => {
