@@ -26,3 +26,8 @@ div.row {
 h1.center-text {
     margin: 20px;
 }
+
+.no-style {
+    text-decoration: none;
+    color: inherit;
+}

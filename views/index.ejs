@@ -14,6 +14,9 @@
                 <div class="img-thumbnail">
                     <img src="<%= camp.image_url %>" class="img-fluid" alt="<%= camp.name %>">
                     <div class="caption"><h4><%= camp.name %> </h4></div>
+                    <p>
+                        <a href="/campgrounds/<%= camp._id %>" class="btn btn-primary btn-block">More info</a>
+                    </p>
                 </div>
             </div>
         <% }) %>

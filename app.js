@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 //Campgrounds Page
 app.get("/campgrounds", (req, res) => {
     Campground.find().then((camps) => {
-        res.render("campgrounds" , {title: "campgrounds", camps : camps});
+        res.render("index" , {title: "campgrounds", camps : camps});
     }).catch((err) => {
         res.send(`<h3>Error: ${err}</h3>`);
     });
@@ -39,13 +39,23 @@ app.get('/campgrounds/new', (req, res) => {
 app.post('/campgrounds', (req, res) => {
     let name    = req.body.name;
     let url     = req.body.image_url;
-    let newCamp = { name: name, image_url: url};
+    let desc    = req.body.desc;
+    let newCamp = { name: name, image_url: url, desc: desc};
     Campground.create(newCamp).then(() => {
         res.redirect('/campgrounds');
     }).catch((err) => {
         res.send(`<h3>Error: ${err}</h3>`);
     });
 });
+
+//Show page
+app.get('/campgrounds/:id', (req, res) => {
+    Campground.findById(req.params.id).then((camp) => {
+        res.render("show.ejs", {title: camp.name, camp: camp});
+    }).catch((err) => {
+        res.send(`<h3>Error: ${err}</h3>`);
+    });
+})
 
 //Listening
 app.listen(3000, () => {
